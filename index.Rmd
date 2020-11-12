@@ -1,0 +1,193 @@
+---
+title: "PM566 assignment5"
+author: "Mingzhi Ye"
+output: 
+    html_document:
+        toc: TRUE
+        toc_float: TRUE
+---
+
+<br>
+
+This is my PM566 assignment5 website. I will showcase a few interactive visuals here.
+
+<br>
+
+```{r setup, message=FALSE, echo=FALSE, warning=FALSE}
+
+library(data.table)
+library(tidyverse)
+library(dplyr)
+library(plotly)
+library(DT)
+library(knitr)
+library(listviewer)
+# Initialize code chunk options
+opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  eval=TRUE,
+  echo = TRUE,
+  cache = FALSE,
+  fig.width = 7, 
+  fig.align = 'center',
+  fig.asp = 0.618,
+  out.width = "700px",
+  class.source = "code-r")
+```
+
+```{css, echo = FALSE}
+.code-r { /* Code block */
+  font-size: 15px;
+}
+
+.code-r-small { /* Code block */
+  font-size: 10px;
+}
+```
+
+<br>
+
+
+
+First I will source any necessary code, e.g. `process_covid_data.R`:
+
+```{r load-data}
+source("pollutiondata.R")
+```
+
+<br>
+
+## Second step
+
+Then I will add some code to create the **plotly** figures
+
+#Average concentration of SO2 in 2018 and previous years
+
+```{r plot1, class.source="code-r-small"}
+data_s1 <- data_s %>%
+  group_by(Date,year) %>%
+  summarise(monitor_concentration:=mean(monitor_concentration,na.rm=TRUE))
+data_s1<-as.data.frame(data_s1)
+data_s1 %>% plot_ly(x = ~Date, y = ~monitor_concentration, color=~year, type = "scatter", mode = "lines",
+        hoverinfo = 'text',
+        text = ~paste(paste("Date: ", Date, sep=""),
+                      paste("Concentration of SO2: ", monitor_concentration, sep=""),
+                      paste("Year: ", year, sep=""), sep = "<br>")) %>%
+  layout(title = "Average concentration of SO2 in 2018 and previous years",
+                  yaxis = list(title = "Average concentration of SO2"), xaxis = list(title = "Date"),
+         hovermode = "compare")
+
+```
+
+#Average concentration of CO in 2018 and previous years
+
+```{r plot2, class.source="code-r-small"}
+data_c1 <- data_c %>%
+  group_by(Date,year) %>%
+  summarise(monitor_concentration:=mean(monitor_concentration,na.rm=TRUE))
+data_c1<-as.data.frame(data_c1)
+data_c1 %>% plot_ly(x = ~Date, y = ~monitor_concentration, color=~year, type = "scatter", mode = "lines",
+        hoverinfo = 'text',
+        text = ~paste(paste("Date: ", Date, sep=""),
+                      paste("Concentration of CO: ", monitor_concentration, sep=""),
+                      paste("Year: ", year, sep=""), sep = "<br>")) %>%
+  layout(title = "Average concentration of CO in 2018 and previous years",
+                  yaxis = list(title = "Average concentration of CO2"), xaxis = list(title = "Date"),
+         hovermode = "compare")
+
+```
+
+#Times of change in concentration of SO2 between 2018 and previous years
+
+```{r plot3, class.source="code-r-small"}
+data_s1<-data_s %>%
+  group_by(county,year) %>%
+  summarise(monitor_concentration=mean(monitor_concentration,na.rm=TRUE),
+            latitude=mean(latitude,na.rm=TRUE),
+            longitude=mean(longitude,na.rm=TRUE))
+data_s1<-data.table(data_s1)
+data_s2<-data_s1[year=="Previous years"]
+data_s3<-data_s1[year=="2018"]
+data_sx<-merge(x=data_s2,y=data_s3,
+           by.x="county", by.y="county",
+           all.x=TRUE,all.y=TRUE)
+data_sx[,times:=monitor_concentration.y/monitor_concentration.x]
+data_sx<-data_sx[,.(county,latitude.x,longitude.x,times)]
+
+shadeLimit <- 2
+
+fig <- data_sx %>%
+  plot_ly(
+    lat = ~latitude.x,
+    lon = ~longitude.x,
+    mode   = 'markers',
+    marker = list(mode   = 'markers',
+                  color = ~times,
+                  colors = 'Purples',
+                  size=~times*30
+                  ),
+    colors = 'Purples',
+    type = 'scattermapbox',
+    hoverinfo = 'text',
+    text = ~paste( paste(county, ":", sep=""), paste(" The concentration of SO2 in 2018 is ", round(times,2)," times of that in previous years", sep=""),sep="<br>")
+    )
+
+fig <- fig %>%
+  layout(
+    title = "Times of change in concentration of SO2 between 2018 and previous years",
+    mapbox = list(
+      style = 'open-street-map',
+      zoom =5,
+      center = list(lon = -120, lat = 37)))
+
+fig
+
+```
+
+#Times of change in concentration of CO between 2018 and previous years
+
+```{r plot4, class.source="code-r-small"}
+data_c1<-data_c %>%
+  group_by(county,year) %>%
+  summarise(monitor_concentration=mean(monitor_concentration,na.rm=TRUE),
+            latitude=mean(latitude,na.rm=TRUE),
+            longitude=mean(longitude,na.rm=TRUE))
+data_c1<-data.table(data_c1)
+data_c2<-data_c1[year=="Previous years"]
+data_c3<-data_c1[year=="2018"]
+data_cx<-merge(x=data_c2,y=data_c3,
+           by.x="county", by.y="county",
+           all.x=TRUE,all.y=TRUE)
+data_cx[,times:=monitor_concentration.y/monitor_concentration.x]
+data_cx<-data_cx[,.(county,latitude.x,longitude.x,times)]
+
+shadeLimit <- 2
+
+fig <- data_cx %>%
+  plot_ly(
+    lat = ~latitude.x,
+    lon = ~longitude.x,
+    mode   = 'markers',
+    marker = list(mode   = 'markers',
+                  color = ~times,
+                  colors = 'Purples',
+                  size=~times*30
+                  ),
+    colors = 'Purples',
+    type = 'scattermapbox',
+    hoverinfo = 'text',
+    text = ~paste( paste(county, ":", sep=""), paste(" The concentration of CO in 2018 is ", round(times,2)," times of that in previous years", sep=""),sep="<br>")
+    )
+
+fig <- fig %>%
+  layout(
+    title = "Times of change in concentration of CO between 2018 and previous years",
+    mapbox = list(
+      style = 'open-street-map',
+      zoom =5,
+      center = list(lon = -120, lat = 37)))
+
+fig
+
+```

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Mingzhi Ye" />
+
+
+<title>PM566 assignment5</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PM566 assignment5</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/USCbiostats/PM566">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://elastic-khorana-70231e.netlify.app/">PM566 Home</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">PM566 assignment5</h1>
+<h4 class="author">Mingzhi Ye</h4>
+
+</div>
+
+
+<p><br></p>
+<p>This is my PM566 assignment5 website. I will showcase a few interactive visuals here.</p>
+<p><br></p>
+<style type="text/css">
+.code-r { /* Code block */
+  font-size: 15px;
+}
+
+.code-r-small { /* Code block */
+  font-size: 10px;
+}
+</style>
+<p><br></p>
+<p>First I will source any necessary code, e.g. <code>process_covid_data.R</code>:</p>
+<pre class="r code-r"><code>source(&quot;pollutiondata.R&quot;)</code></pre>
+<p><br></p>
+<div id="second-step" class="section level2">
+<h2>Second step</h2>
+<p>Then I will add some code to create the <strong>plotly</strong> figures</p>
+</div>
+<div id="average-concentration-of-so2-in-2018-and-previous-years" class="section level1">
+<h1>Average concentration of SO2 in 2018 and previous years</h1>
+<pre class="r code-r-small"><code>data_s1 &lt;- data_s %&gt;%
+  group_by(Date,year) %&gt;%
+  summarise(monitor_concentration:=mean(monitor_concentration,na.rm=TRUE))
+data_s1&lt;-as.data.frame(data_s1)
+data_s1 %&gt;% plot_ly(x = ~Date, y = ~monitor_concentration, color=~year, type = &quot;scatter&quot;, mode = &quot;lines&quot;,
+        hoverinfo = &#39;text&#39;,
+        text = ~paste(paste(&quot;Date: &quot;, Date, sep=&quot;&quot;),
+                      paste(&quot;Concentration of SO2: &quot;, monitor_concentration, sep=&quot;&quot;),
+                      paste(&quot;Year: &quot;, year, sep=&quot;&quot;), sep = &quot;&lt;br&gt;&quot;)) %&gt;%
+  layout(title = &quot;Average concentration of SO2 in 2018 and previous years&quot;,
+                  yaxis = list(title = &quot;Average concentration of SO2&quot;), xaxis = list(title = &quot;Date&quot;),
+         hovermode = &quot;compare&quot;)</code></pre>
+<div id="htmlwidget-90c2456bd5255f4a99bd" style="width:700px;height:415.296px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-90c2456bd5255f4a99bd">{"x":{"visdat":{"477cac361e5":["function () ","plotlyVisDat"]},"cur_data":"477cac361e5","attrs":{"477cac361e5":{"x":{},"y":{},"mode":"lines","hoverinfo":"text","text":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Average concentration of SO2 in 2018 and previous years","yaxis":{"domain":[0,1],"automargin":true,"title":"Average concentration of SO2"},"xaxis":{"domain":[0,1],"automargin":true,"title":"Date","type":"category","categoryorder":"array","categoryarray":["11-08","11-09","11-10","11-11","11-12","11-13","11-14","11-15","11-16","11-17","11-18","11-19","11-20","11-21","11-22","11-23","11-24","11-25"]},"hovermode":"compare","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":["11-08","11-09","11-10","11-11","11-12","11-13","11-14","11-15","11-16","11-17","11-18","11-19","11-20","11-21","11-22","11-23","11-24","11-25"],"y":[29.621875,32.8938571428571,27.0853333333333,36.2831578947368,31.3016315789474,37.5697619047619,29.6671428571429,34.999652173913,18.3857142857143,36.5168421052632,24.2029444444444,36.423652173913,29.7147833333333,22.0194736842105,24.7833,36.1857894736842,23.7612352941176,34.8200952380952],"mode":"lines","hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["Date: 11-08<br>Concentration of SO2: 29.621875<br>Year: 2018","Date: 11-09<br>Concentration of SO2: 32.8938571428571<br>Year: 2018","Date: 11-10<br>Concentration of SO2: 27.0853333333333<br>Year: 2018","Date: 11-11<br>Concentration of SO2: 36.2831578947368<br>Year: 2018","Date: 11-12<br>Concentration of SO2: 31.3016315789474<br>Year: 2018","Date: 11-13<br>Concentration of SO2: 37.5697619047619<br>Year: 2018","Date: 11-14<br>Concentration of SO2: 29.6671428571429<br>Year: 2018","Date: 11-15<br>Concentration of SO2: 34.999652173913<br>Year: 2018","Date: 11-16<br>Concentration of SO2: 18.3857142857143<br>Year: 2018","Date: 11-17<br>Concentration of SO2: 36.5168421052632<br>Year: 2018","Date: 11-18<br>Concentration of SO2: 24.2029444444444<br>Year: 2018","Date: 11-19<br>Concentration of SO2: 36.423652173913<br>Year: 2018","Date: 11-20<br>Concentration of SO2: 29.7147833333333<br>Year: 2018","Date: 11-21<br>Concentration of SO2: 22.0194736842105<br>Year: 2018","Date: 11-22<br>Concentration of SO2: 24.7833<br>Year: 2018","Date: 11-23<br>Concentration of SO2: 36.1857894736842<br>Year: 2018","Date: 11-24<br>Concentration of SO2: 23.7612352941176<br>Year: 2018","Date: 11-25<br>Concentration of SO2: 34.8200952380952<br>Year: 2018"],"type":"scatter","name":"2018","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["11-08","11-09","11-10","11-11","11-12","11-13","11-14","11-15","11-16","11-17","11-18","11-19","11-20","11-21","11-22","11-23","11-24","11-25"],"y":[43.2186428571429,66.7219719298246,55.00821,71.0568888888889,24.0930055555556,60.362793442623,38.024715,70.4677959183673,61.9342631578947,66.6225315789474,43.982037037037,66.3513537931035,39.5060952380952,45.721045,48.493,65.5725517241379,52.0766764705882,70.0088927272727],"mode":"lines","hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["Date: 11-08<br>Concentration of SO2: 43.2186428571429<br>Year: Previous years","Date: 11-09<br>Concentration of SO2: 66.7219719298246<br>Year: Previous years","Date: 11-10<br>Concentration of SO2: 55.00821<br>Year: Previous years","Date: 11-11<br>Concentration of SO2: 71.0568888888889<br>Year: Previous years","Date: 11-12<br>Concentration of SO2: 24.0930055555556<br>Year: Previous years","Date: 11-13<br>Concentration of SO2: 60.362793442623<br>Year: Previous years","Date: 11-14<br>Concentration of SO2: 38.024715<br>Year: Previous years","Date: 11-15<br>Concentration of SO2: 70.4677959183673<br>Year: Previous years","Date: 11-16<br>Concentration of SO2: 61.9342631578947<br>Year: Previous years","Date: 11-17<br>Concentration of SO2: 66.6225315789474<br>Year: Previous years","Date: 11-18<br>Concentration of SO2: 43.982037037037<br>Year: Previous years","Date: 11-19<br>Concentration of SO2: 66.3513537931035<br>Year: Previous years","Date: 11-20<br>Concentration of SO2: 39.5060952380952<br>Year: Previous years","Date: 11-21<br>Concentration of SO2: 45.721045<br>Year: Previous years","Date: 11-22<br>Concentration of SO2: 48.493<br>Year: Previous years","Date: 11-23<br>Concentration of SO2: 65.5725517241379<br>Year: Previous years","Date: 11-24<br>Concentration of SO2: 52.0766764705882<br>Year: Previous years","Date: 11-25<br>Concentration of SO2: 70.0088927272727<br>Year: Previous years"],"type":"scatter","name":"Previous years","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="average-concentration-of-co-in-2018-and-previous-years" class="section level1">
+<h1>Average concentration of CO in 2018 and previous years</h1>
+<pre class="r code-r-small"><code>data_c1 &lt;- data_c %&gt;%
+  group_by(Date,year) %&gt;%
+  summarise(monitor_concentration:=mean(monitor_concentration,na.rm=TRUE))
+data_c1&lt;-as.data.frame(data_c1)
+data_c1 %&gt;% plot_ly(x = ~Date, y = ~monitor_concentration, color=~year, type = &quot;scatter&quot;, mode = &quot;lines&quot;,
+        hoverinfo = &#39;text&#39;,
+        text = ~paste(paste(&quot;Date: &quot;, Date, sep=&quot;&quot;),
+                      paste(&quot;Concentration of CO: &quot;, monitor_concentration, sep=&quot;&quot;),
+                      paste(&quot;Year: &quot;, year, sep=&quot;&quot;), sep = &quot;&lt;br&gt;&quot;)) %&gt;%
+  layout(title = &quot;Average concentration of CO in 2018 and previous years&quot;,
+                  yaxis = list(title = &quot;Average concentration of CO2&quot;), xaxis = list(title = &quot;Date&quot;),
+         hovermode = &quot;compare&quot;)</code></pre>
+<div id="htmlwidget-af30e5da27be29ae961e" style="width:700px;height:415.296px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-af30e5da27be29ae961e">{"x":{"visdat":{"477ca4659fb":["function () ","plotlyVisDat"]},"cur_data":"477ca4659fb","attrs":{"477ca4659fb":{"x":{},"y":{},"mode":"lines","hoverinfo":"text","text":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Average concentration of CO in 2018 and previous years","yaxis":{"domain":[0,1],"automargin":true,"title":"Average concentration of CO2"},"xaxis":{"domain":[0,1],"automargin":true,"title":"Date","type":"category","categoryorder":"array","categoryarray":["11-08","11-09","11-10","11-11","11-12","11-13","11-14","11-15","11-16","11-17","11-18","11-19","11-20","11-21","11-22","11-23","11-24","11-25"]},"hovermode":"compare","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":["11-08","11-09","11-10","11-11","11-12","11-13","11-14","11-15","11-16","11-17","11-18","11-19","11-20","11-21","11-22","11-23","11-24","11-25"],"y":[37.4549285714286,44.8756744186047,42.4154285714286,44.4208181818182,35.9794545454545,49.519847826087,37.1135664871429,41.8690416666667,36.07725,47.0947,35.3237272727273,40.0238775510204,37.1156390243902,35.8943902439024,39.5068048780488,45.651243902439,33.2598611111111,37.8020269402292],"mode":"lines","hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["Date: 11-08<br>Concentration of CO: 37.4549285714286<br>Year: 2018","Date: 11-09<br>Concentration of CO: 44.8756744186047<br>Year: 2018","Date: 11-10<br>Concentration of CO: 42.4154285714286<br>Year: 2018","Date: 11-11<br>Concentration of CO: 44.4208181818182<br>Year: 2018","Date: 11-12<br>Concentration of CO: 35.9794545454545<br>Year: 2018","Date: 11-13<br>Concentration of CO: 49.519847826087<br>Year: 2018","Date: 11-14<br>Concentration of CO: 37.1135664871429<br>Year: 2018","Date: 11-15<br>Concentration of CO: 41.8690416666667<br>Year: 2018","Date: 11-16<br>Concentration of CO: 36.07725<br>Year: 2018","Date: 11-17<br>Concentration of CO: 47.0947<br>Year: 2018","Date: 11-18<br>Concentration of CO: 35.3237272727273<br>Year: 2018","Date: 11-19<br>Concentration of CO: 40.0238775510204<br>Year: 2018","Date: 11-20<br>Concentration of CO: 37.1156390243902<br>Year: 2018","Date: 11-21<br>Concentration of CO: 35.8943902439024<br>Year: 2018","Date: 11-22<br>Concentration of CO: 39.5068048780488<br>Year: 2018","Date: 11-23<br>Concentration of CO: 45.651243902439<br>Year: 2018","Date: 11-24<br>Concentration of CO: 33.2598611111111<br>Year: 2018","Date: 11-25<br>Concentration of CO: 37.8020269402292<br>Year: 2018"],"type":"scatter","name":"2018","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["11-08","11-09","11-10","11-11","11-12","11-13","11-14","11-15","11-16","11-17","11-18","11-19","11-20","11-21","11-22","11-23","11-24","11-25"],"y":[12.1682981075957,50.2182436480556,11.5127494826923,47.7701831747475,20.7657733098765,39.9626393706522,17.8816531898077,59.5200706347312,5.24178683865385,48.5889603937624,10.5118544755493,41.3852202870902,10.9408720610274,11.214190699878,22.2920096245641,48.8269470998942,4.86411621225,52.0348600381402],"mode":"lines","hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["Date: 11-08<br>Concentration of CO: 12.1682981075957<br>Year: Previous years","Date: 11-09<br>Concentration of CO: 50.2182436480556<br>Year: Previous years","Date: 11-10<br>Concentration of CO: 11.5127494826923<br>Year: Previous years","Date: 11-11<br>Concentration of CO: 47.7701831747475<br>Year: Previous years","Date: 11-12<br>Concentration of CO: 20.7657733098765<br>Year: Previous years","Date: 11-13<br>Concentration of CO: 39.9626393706522<br>Year: Previous years","Date: 11-14<br>Concentration of CO: 17.8816531898077<br>Year: Previous years","Date: 11-15<br>Concentration of CO: 59.5200706347312<br>Year: Previous years","Date: 11-16<br>Concentration of CO: 5.24178683865385<br>Year: Previous years","Date: 11-17<br>Concentration of CO: 48.5889603937624<br>Year: Previous years","Date: 11-18<br>Concentration of CO: 10.5118544755493<br>Year: Previous years","Date: 11-19<br>Concentration of CO: 41.3852202870902<br>Year: Previous years","Date: 11-20<br>Concentration of CO: 10.9408720610274<br>Year: Previous years","Date: 11-21<br>Concentration of CO: 11.214190699878<br>Year: Previous years","Date: 11-22<br>Concentration of CO: 22.2920096245641<br>Year: Previous years","Date: 11-23<br>Concentration of CO: 48.8269470998942<br>Year: Previous years","Date: 11-24<br>Concentration of CO: 4.86411621225<br>Year: Previous years","Date: 11-25<br>Concentration of CO: 52.0348600381402<br>Year: Previous years"],"type":"scatter","name":"Previous years","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="times-of-change-in-concentration-of-so2-between-2018-and-previous-years" class="section level1">
+<h1>Times of change in concentration of SO2 between 2018 and previous years</h1>
+<pre class="r code-r-small"><code>data_s1&lt;-data_s %&gt;%
+  group_by(county,year) %&gt;%
+  summarise(monitor_concentration=mean(monitor_concentration,na.rm=TRUE),
+            latitude=mean(latitude,na.rm=TRUE),
+            longitude=mean(longitude,na.rm=TRUE))
+data_s1&lt;-data.table(data_s1)
+data_s2&lt;-data_s1[year==&quot;Previous years&quot;]
+data_s3&lt;-data_s1[year==&quot;2018&quot;]
+data_sx&lt;-merge(x=data_s2,y=data_s3,
+           by.x=&quot;county&quot;, by.y=&quot;county&quot;,
+           all.x=TRUE,all.y=TRUE)
+data_sx[,times:=monitor_concentration.y/monitor_concentration.x]
+data_sx&lt;-data_sx[,.(county,latitude.x,longitude.x,times)]
+
+shadeLimit &lt;- 2
+
+fig &lt;- data_sx %&gt;%
+  plot_ly(
+    lat = ~latitude.x,
+    lon = ~longitude.x,
+    mode   = &#39;markers&#39;,
+    marker = list(mode   = &#39;markers&#39;,
+                  color = ~times,
+                  colors = &#39;Purples&#39;,
+                  size=~times*30
+                  ),
+    colors = &#39;Purples&#39;,
+    type = &#39;scattermapbox&#39;,
+    hoverinfo = &#39;text&#39;,
+    text = ~paste( paste(county, &quot;:&quot;, sep=&quot;&quot;), paste(&quot; The concentration of SO2 in 2018 is &quot;, round(times,2),&quot; times of that in previous years&quot;, sep=&quot;&quot;),sep=&quot;&lt;br&gt;&quot;)
+    )
+
+fig &lt;- fig %&gt;%
+  layout(
+    title = &quot;Times of change in concentration of SO2 between 2018 and previous years&quot;,
+    mapbox = list(
+      style = &#39;open-street-map&#39;,
+      zoom =5,
+      center = list(lon = -120, lat = 37)))
+
+fig</code></pre>
+<div id="htmlwidget-4dd2c10b7077b097cb86" style="width:700px;height:415.296px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4dd2c10b7077b097cb86">{"x":{"visdat":{"477c4d72da1":["function () ","plotlyVisDat"]},"cur_data":"477c4d72da1","attrs":{"477c4d72da1":{"lat":{},"lon":{},"mode":"markers","marker":{"mode":"markers","color":{},"colors":"Purples","size":{}},"hoverinfo":"text","text":{},"colors":"Purples","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scattermapbox"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Times of change in concentration of SO2 between 2018 and previous years","mapbox":{"style":"open-street-map","zoom":5,"center":{"lon":-120,"lat":37}},"hovermode":"closest","showlegend":false},"source":"A","config":{"showSendToCloud":false},"data":[{"lat":[37.814781,37.9887853551913,36.78538,40.7428489655172,32.67618,37.360684,33.9621394444444,33.67464,33.99958,38.613779,34.7516109375,32.7994704,35.02083,34.557133375,37.3424846,38.102507],"lon":[-122.282347,-122.129353819672,-119.77321,-124.191572758621,-115.48307,-118.330783,-118.297852222222,-117.92568,-117.41601,-121.368014,-117.4022975,-116.951658733333,-120.56388,-120.272905875,-121.9298594,-122.237976],"mode":"markers","marker":{"color":[0.971325446160016,0.983607923271637,0.811320095091596,1.05233168391063,1.0289169386763,0.155452629387734,0.904277814770814,null,0.65513342379014,0.952803669181832,0.271767815013585,0.497383663989703,0.712979062594573,0.648963865458711,0.37213949142096,1.02178825616513],"mode":"markers","colors":"Purples","size":[29.1397633848005,29.5082376981491,24.3396028527479,31.5699505173189,30.8675081602889,4.66357888163202,27.1283344431244,null,19.6540027137042,28.584110075455,8.15303445040755,14.9215099196911,21.3893718778372,19.4689159637613,11.1641847426288,30.6536476849538],"line":{"color":"rgba(31,119,180,1)"}},"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["Alameda:<br> The concentration of SO2 in 2018 is 0.97 times of that in previous years","Contra Costa:<br> The concentration of SO2 in 2018 is 0.98 times of that in previous years","Fresno:<br> The concentration of SO2 in 2018 is 0.81 times of that in previous years","Humboldt:<br> The concentration of SO2 in 2018 is 1.05 times of that in previous years","Imperial:<br> The concentration of SO2 in 2018 is 1.03 times of that in previous years","Inyo:<br> The concentration of SO2 in 2018 is 0.16 times of that in previous years","Los Angeles:<br> The concentration of SO2 in 2018 is 0.9 times of that in previous years","Orange:<br> The concentration of SO2 in 2018 is NA times of that in previous years","Riverside:<br> The concentration of SO2 in 2018 is 0.66 times of that in previous years","Sacramento:<br> The concentration of SO2 in 2018 is 0.95 times of that in previous years","San Bernardino:<br> The concentration of SO2 in 2018 is 0.27 times of that in previous years","San Diego:<br> The concentration of SO2 in 2018 is 0.5 times of that in previous years","San Luis Obispo:<br> The concentration of SO2 in 2018 is 0.71 times of that in previous years","Santa Barbara:<br> The concentration of SO2 in 2018 is 0.65 times of that in previous years","Santa Clara:<br> The concentration of SO2 in 2018 is 0.37 times of that in previous years","Solano:<br> The concentration of SO2 in 2018 is 1.02 times of that in previous years"],"type":"scattermapbox","line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="times-of-change-in-concentration-of-co-between-2018-and-previous-years" class="section level1">
+<h1>Times of change in concentration of CO between 2018 and previous years</h1>
+<pre class="r code-r-small"><code>data_c1&lt;-data_c %&gt;%
+  group_by(county,year) %&gt;%
+  summarise(monitor_concentration=mean(monitor_concentration,na.rm=TRUE),
+            latitude=mean(latitude,na.rm=TRUE),
+            longitude=mean(longitude,na.rm=TRUE))
+data_c1&lt;-data.table(data_c1)
+data_c2&lt;-data_c1[year==&quot;Previous years&quot;]
+data_c3&lt;-data_c1[year==&quot;2018&quot;]
+data_cx&lt;-merge(x=data_c2,y=data_c3,
+           by.x=&quot;county&quot;, by.y=&quot;county&quot;,
+           all.x=TRUE,all.y=TRUE)
+data_cx[,times:=monitor_concentration.y/monitor_concentration.x]
+data_cx&lt;-data_cx[,.(county,latitude.x,longitude.x,times)]
+
+shadeLimit &lt;- 2
+
+fig &lt;- data_cx %&gt;%
+  plot_ly(
+    lat = ~latitude.x,
+    lon = ~longitude.x,
+    mode   = &#39;markers&#39;,
+    marker = list(mode   = &#39;markers&#39;,
+                  color = ~times,
+                  colors = &#39;Purples&#39;,
+                  size=~times*30
+                  ),
+    colors = &#39;Purples&#39;,
+    type = &#39;scattermapbox&#39;,
+    hoverinfo = &#39;text&#39;,
+    text = ~paste( paste(county, &quot;:&quot;, sep=&quot;&quot;), paste(&quot; The concentration of CO in 2018 is &quot;, round(times,2),&quot; times of that in previous years&quot;, sep=&quot;&quot;),sep=&quot;&lt;br&gt;&quot;)
+    )
+
+fig &lt;- fig %&gt;%
+  layout(
+    title = &quot;Times of change in concentration of CO between 2018 and previous years&quot;,
+    mapbox = list(
+      style = &#39;open-street-map&#39;,
+      zoom =5,
+      center = list(lon = -120, lat = 37)))
+
+fig</code></pre>
+<div id="htmlwidget-9ffc3c99f2b4e0204606" style="width:700px;height:415.296px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9ffc3c99f2b4e0204606">{"x":{"visdat":{"477c49f54437":["function () ","plotlyVisDat"]},"cur_data":"477c49f54437","attrs":{"477c49f54437":{"lat":{},"lon":{},"mode":"markers","marker":{"mode":"markers","color":{},"colors":"Purples","size":{}},"hoverinfo":"text","text":{},"colors":"Purples","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scattermapbox"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Times of change in concentration of CO between 2018 and previous years","mapbox":{"style":"open-street-map","zoom":5,"center":{"lon":-120,"lat":37}},"hovermode":"closest","showlegend":false},"source":"A","config":{"showSendToCloud":false},"data":[{"lat":[37.7955223076923,39.76168,37.9705593563218,36.7391285138889,40.7531261538462,32.6851061538462,37.360684,35.291604119403,34.13946836,36.867125,37.97231,36.694261,38.310942,33.7766079545455,33.9135916,38.6449034772727,34.3080983606557,32.862221,37.765946,37.950741,37.482934,34.6379525536723,37.3408535,38.102507,38.4136995,37.6353775882353,39.205572],"lon":[-122.246518307692,-121.84047,-122.002646126437,-119.980122291667,-124.187913076923,-115.489223076923,-118.330783,-118.908489373134,-118.189899306667,-120.010158,-122.520004,-121.623271,-122.296189,-117.877004409091,-117.2414528,-121.425337227273,-117.336626704918,-117.034475060606,-122.399044,-121.268523,-122.20337,-120.111480011299,-121.89983075,-122.237976,-122.79126275,-120.987232411765,-121.820362],"mode":"markers","marker":{"color":[1.00547299723319,0.965870798652113,0.993485504313919,0.156631703793224,1.0220922677063,0.65834020582609,0.284843869002285,0.0210913330887771,1.88997591056492,1.02318816829858,1.00427894550085,0.987717794915738,1.003106546629,0.21868905950768,1.17989615223552,0.835192454666367,0.250408802984149,1.09297223896901,1.00382846283086,0.859625605091229,0.997595827334221,1.12860655384078,1.01004477713862,0.993939896487628,null,0.736714670094092,null],"mode":"markers","colors":"Purples","size":[30.1641899169958,28.9761239595634,29.8045651294176,4.69895111379672,30.6627680311891,19.7502061747827,8.54531607006854,0.632739992663313,56.6992773169477,30.6956450489574,30.1283683650254,29.6315338474722,30.09319639887,6.56067178523039,35.3968845670655,25.055773639991,7.51226408952448,32.7891671690703,30.1148538849258,25.7887681527369,29.9278748200266,33.8581966152234,30.3013433141586,29.8181968946288,null,22.1014401028228,null],"line":{"color":"rgba(31,119,180,1)"}},"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["Alameda:<br> The concentration of CO in 2018 is 1.01 times of that in previous years","Butte:<br> The concentration of CO in 2018 is 0.97 times of that in previous years","Contra Costa:<br> The concentration of CO in 2018 is 0.99 times of that in previous years","Fresno:<br> The concentration of CO in 2018 is 0.16 times of that in previous years","Humboldt:<br> The concentration of CO in 2018 is 1.02 times of that in previous years","Imperial:<br> The concentration of CO in 2018 is 0.66 times of that in previous years","Inyo:<br> The concentration of CO in 2018 is 0.28 times of that in previous years","Kern:<br> The concentration of CO in 2018 is 0.02 times of that in previous years","Los Angeles:<br> The concentration of CO in 2018 is 1.89 times of that in previous years","Madera:<br> The concentration of CO in 2018 is 1.02 times of that in previous years","Marin:<br> The concentration of CO in 2018 is 1 times of that in previous years","Monterey:<br> The concentration of CO in 2018 is 0.99 times of that in previous years","Napa:<br> The concentration of CO in 2018 is 1 times of that in previous years","Orange:<br> The concentration of CO in 2018 is 0.22 times of that in previous years","Riverside:<br> The concentration of CO in 2018 is 1.18 times of that in previous years","Sacramento:<br> The concentration of CO in 2018 is 0.84 times of that in previous years","San Bernardino:<br> The concentration of CO in 2018 is 0.25 times of that in previous years","San Diego:<br> The concentration of CO in 2018 is 1.09 times of that in previous years","San Francisco:<br> The concentration of CO in 2018 is 1 times of that in previous years","San Joaquin:<br> The concentration of CO in 2018 is 0.86 times of that in previous years","San Mateo:<br> The concentration of CO in 2018 is 1 times of that in previous years","Santa Barbara:<br> The concentration of CO in 2018 is 1.13 times of that in previous years","Santa Clara:<br> The concentration of CO in 2018 is 1.01 times of that in previous years","Solano:<br> The concentration of CO in 2018 is 0.99 times of that in previous years","Sonoma:<br> The concentration of CO in 2018 is NA times of that in previous years","Stanislaus:<br> The concentration of CO in 2018 is 0.74 times of that in previous years","Sutter:<br> The concentration of CO in 2018 is NA times of that in previous years"],"type":"scattermapbox","line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+
+<p>Copyright &copy; 2020, Mingzhi Ye.</p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
